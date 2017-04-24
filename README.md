@@ -4,7 +4,9 @@ Project 02 - README
 Members
 -------
 
-- Domer McDomerson (dmcdomer@nd.edu)
+- Kendyll Kraus (kkraus1@nd.edu)
+- John McGuinness (jmcguin1@nd.edu)
+- Herman Tong (ktong@nd.edu)
 
 Summary
 -------
