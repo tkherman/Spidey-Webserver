@@ -36,7 +36,7 @@ accept_request(int sfd)
 
     /* Accept a client */
     if ((r->fd = accept(sfd, &raddr, &rlen)) == -1) {
-        fprinf(stderr, "Unable to accept client: %s\n", strerror(errno));
+        fprintf(stderr, "Unable to accept client: %s\n", strerror(errno));
         return -1;
     }
 
@@ -214,7 +214,7 @@ parse_request_headers(struct request *r)
     
     /* Parse headers from socket */
     while (fgets(buffer, BUFSIZ, r->file)) {
-        struct header *new_header = ccalloc(1, sizeof(struct header));
+        struct header *new_header = calloc(1, sizeof(struct header));
 
         char *delimPtr = strchr(buffer, ':');
         *delimPtr = '\0';
