@@ -89,7 +89,7 @@ request_type
 determine_request_type(const char *path)
 {
     struct stat s;
-    request_type_t type;
+    request_type type;
 
     return (type);
 }
@@ -113,6 +113,9 @@ http_status_string(http_status status)
 char *
 skip_nonwhitespace(char *s)
 {
+    while (!isspace(*s))
+        s++;
+
     return s;
 }
 
@@ -122,6 +125,9 @@ skip_nonwhitespace(char *s)
 char *
 skip_whitespace(char *s)
 {
+    while(isspace(*s))
+        s++;
+
     return s;
 }
 
