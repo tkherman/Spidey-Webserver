@@ -6,6 +6,10 @@ TARGETS=	spidey
 
 all:		$(TARGETS)
 
+spidey: forking.o handler.o request.o single.o socket.o spidey.o utils.o
+	@echo Linking spidey...
+	@$(LD) $(LDFLAGS) -o $@ $^
+
 forking.o: forking.c spidey.h
 	@echo Compiling forking.o...
 	@$(CC) $(CFLAGS) -o $@ -c $<
@@ -33,12 +37,6 @@ spidey.o: spidey.c spidey.h
 utils.o: utils.c spidey.h
 	@echo Compiling utils.o...
 	@$(CC) $(CFLAGS) -o $@ -c $<
-
-spidey: forking.o handler.o request.o single.o socket.o spidey.o utils.o
-	@echo Linking spidey...
-	@$(LD) $(LDFLAGS) -o $@ $^
-	
-
 
 clean:
 	@echo Cleaning...
