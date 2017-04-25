@@ -8,31 +8,31 @@ all:		$(TARGETS)
 
 forking.o: forking.c spidey.h
 	@echo Compiling forking.o...
-	@$(CC) $(CFLAGS) -o $@ $<
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 handler.o: handler.c spidey.h
 	@echo Compiling handler.o...
-	@$(CC) $(CFLAGS) -o $@ $<
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 request.o: request.c spidey.h
 	@echo Compiling request.o...
-	@$(CC) $(CFLAGS) -o $@ $<
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 single.o: single.c spidey.h
 	@echo Compiling single.o...
-	@$(CC) $(CFLAGS) -o $@ $<
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 socket.o: socket.c spidey.h
 	@echo Compiling socket.o...
-	@$(CC) $(CFLAGS) -o $@ $<
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 spidey.o: spidey.c spidey.h
 	@echo Compiling spidey.o...
-	@$(CC) $(CFLAGS) -o $@ $<
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 utils.o: utils.c spidey.h
 	@echo Compiling utils.o...
-	@$(CC) $(CFLAGS) -o $@ $<
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 spidey: forking.o handler.o request.o single.o socket.o spidey.o utils.o
 	@echo Linking spidey...
