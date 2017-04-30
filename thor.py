@@ -26,20 +26,29 @@ def usage(status=0):
     sys.exit(status)
 
 def do_request(pid):
-    totalSumAvg = 0
-    for p in range(PROCESSES):
-        sum4avg = 0
-        for req in range(REQUESTS):
-            start = time.time()
-            r = requests.get(URL)
-            end = time.time()
-            sum4avg = sum4avg + (end - start)
-            if VERBOSE:
-                print r.text.rstrip()
-            print("Process: {}, Request: {}, Elapsed Time: {}".format(p, req, end-start))
-        print("Process: {}, Request:  , Elapsed Time: {}".format(p, sum4avg/REQUESTS))
-        totalSumAvg = totalSumAvg + sum4avg/REQUESTS
-    print("TOTAL AVERAGE ELAPSED TIME: {}".format(totalSumAvg/PROCESSES))
+    start = time.time()
+    r = requests.get(URL)
+    end = time.time()
+    time = end - start
+    if VERBOSE:
+        print r.text.rstrip()
+    print("Process: {}, Request: {}, Elapsed Time: {}".format())
+
+
+    #totalSumAvg = 0
+    #for p in range(PROCESSES):
+        #sum4avg = 0
+        #for req in REQUESTS:
+            #start = time.time()
+            #r = requests.get(URL)
+            #end = time.time()
+            #sum4avg = sum4avg + (end - start)
+            #if VERBOSE:
+            #    print r.text.rstrip()
+            #print("Process: {}, Request: {}, Elapsed Time: {}".format(p, req, end-start))
+        #print("Process: {}, Request:  , Elapsed Time: {}".format(p, sum4avg/REQUESTS))
+        #totalSumAvg = totalSumAvg + sum4avg/REQUESTS
+    #print("TOTAL AVERAGE ELAPSED TIME: {}".format(totalSumAvg/PROCESSES))
 
 
 # Main execution
@@ -64,9 +73,14 @@ if __name__ == '__main__':
 
     # Create pool of workers and perform requests
     pool = multiprocessing.Pool(PROCESSES)
-    results = pool.map(do_request, REQUESTS)
+    results = pool.map(do_request, range(REQUESTS))
+    #results = pool.map(do_request, REQUESTS)
 
-
+    avg_time = 0
+    for r in results:
+        avg_time = avg_time + r
+    avg_time = avg_time / len(results)
+    print("TOTAL AVERAGE ELAPSED TIME: {}".format(avg_time))
     
 
 # vim: set sts=4 sw=4 ts=8 expandtab ft=python:
