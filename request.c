@@ -125,11 +125,11 @@ int
 parse_request(struct request *r)
 {
     /* Parse HTTP Request Method */
-    if (parse_request_method(r))
+    if (parse_request_method(r) == -1)
         return -1;
 
     /* Parse HTTP Requet Headers*/
-    if (parse_request_headers(r))
+    if (parse_request_headers(r) == -1)
         return -1;
 
     return 0;
@@ -218,7 +218,7 @@ parse_request_headers(struct request *r)
     char *value;
     
     /* Parse headers from socket */
-    while (fgets(buffer, BUFSIZ, r->file) && strchr(buffer, ':')) {
+    while (fgets(buffer, BUFSIZ, r->file)) {
         struct header *new_header = calloc(1, sizeof(struct header));
 
         char *delimPtr = strchr(buffer, ':');
@@ -235,10 +235,13 @@ parse_request_headers(struct request *r)
             curr->next = new_header;
         curr = new_header;
         new_header->next = NULL;
+    	debug("HTTP HEADER %s = %s", header->name, header->value);
+        
     }
 
-    if (strlen(buffer) > 2)
+    if (strlen(buffer) > 2 && strcmp(buffer, "\r\n"))
         goto fail;
+
 
 #ifndef NDEBUG
     for (struct header *header = r->headers; header != NULL; header = header->next) {
