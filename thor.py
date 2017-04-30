@@ -29,7 +29,6 @@ def usage(status=0):
 
 
 def do_request(pid):
-<<<<<<< HEAD
     sumOfTime = 0
     for r in range(REQUESTS):
         start = time.time()
