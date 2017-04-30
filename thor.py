@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 
 import multiprocessing
+import itertools
 import os
 import requests
 import sys
@@ -25,30 +26,24 @@ def usage(status=0):
     '''.format(os.path.basename(sys.argv[0]))
     sys.exit(status)
 
+
+
 def do_request(pid):
-    start = time.time()
-    r = requests.get(URL)
-    end = time.time()
-    time = end - start
-    if VERBOSE:
-        print r.text.rstrip()
-    print("Process: {}, Request: {}, Elapsed Time: {}".format())
-
-
-    #totalSumAvg = 0
-    #for p in range(PROCESSES):
-        #sum4avg = 0
-        #for req in REQUESTS:
-            #start = time.time()
-            #r = requests.get(URL)
-            #end = time.time()
-            #sum4avg = sum4avg + (end - start)
-            #if VERBOSE:
-            #    print r.text.rstrip()
-            #print("Process: {}, Request: {}, Elapsed Time: {}".format(p, req, end-start))
-        #print("Process: {}, Request:  , Elapsed Time: {}".format(p, sum4avg/REQUESTS))
-        #totalSumAvg = totalSumAvg + sum4avg/REQUESTS
-    #print("TOTAL AVERAGE ELAPSED TIME: {}".format(totalSumAvg/PROCESSES))
+    sumOfTime = 0
+    for r in range(REQUESTS):
+        start = time.time()
+        request = requests.get(URL)
+        end = time.time()
+        timeT = end - start
+        sumOfTime += timeT
+        if VERBOSE:
+            print r.text.rstrip()
+        print("Process: {}, Request: {}, Elapsed Time: {}".format(pid, r, timeT))
+    
+    averageTime = sumOfTime/REQUESTS
+    print("Process: {}, AVERAGE   , Elapsed Time: {}".format(pid, averageTime))
+    
+    return averageTime
 
 
 # Main execution
@@ -62,9 +57,9 @@ if __name__ == '__main__':
         elif arg == '-v':
             VERBOSE = True
         elif arg == '-p':
-            PROCESSES = ARGUMENTS.pop(0)
+            PROCESSES = int(ARGUMENTS.pop(0))
         elif arg == '-r':
-            REQUESTS = ARGUMENTS.pop(0)
+            REQUESTS = int(ARGUMENTS.pop(0))
         else:
             usage(1)
 
@@ -73,13 +68,14 @@ if __name__ == '__main__':
 
     # Create pool of workers and perform requests
     pool = multiprocessing.Pool(PROCESSES)
-    results = pool.map(do_request, range(REQUESTS))
-    #results = pool.map(do_request, REQUESTS)
+    #results = itertools.chain.from_iterable(
+    results = pool.imap(do_request, range(PROCESSES))
 
     avg_time = 0
     for r in results:
-        avg_time = avg_time + r
-    avg_time = avg_time / len(results)
+        avg_time += r
+    
+    avg_time = avg_time / PROCESSES
     print("TOTAL AVERAGE ELAPSED TIME: {}".format(avg_time))
     
 
