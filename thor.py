@@ -35,22 +35,8 @@ def do_request(pid):
         if VERBOSE:
             print r.text.rstrip()
         print("Process: {}, Request: {}, Elapsed Time: {}".format(pid , req, end-start))
+    print("Process: {}, AVERAGE   , Elapsed Time: {}".format(pid, sumNum/REQUESTS))
     return (sumNum / REQUESTS)
-
-    #totalSumAvg = 0
-    #for p in range(PROCESSES):
-        #sum4avg = 0
-        #for req in REQUESTS:
-            #start = time.time()
-            #r = requests.get(URL)
-            #end = time.time()
-            #sum4avg = sum4avg + (end - start)
-            #if VERBOSE:
-            #    print r.text.rstrip()
-            #print("Process: {}, Request: {}, Elapsed Time: {}".format(p, req, end-start))
-        #print("Process: {}, Request:  , Elapsed Time: {}".format(p, sum4avg/REQUESTS))
-        #totalSumAvg = totalSumAvg + sum4avg/REQUESTS
-    #print("TOTAL AVERAGE ELAPSED TIME: {}".format(totalSumAvg/PROCESSES))
 
 
 # Main execution
@@ -64,9 +50,9 @@ if __name__ == '__main__':
         elif arg == '-v':
             VERBOSE = True
         elif arg == '-p':
-            PROCESSES = ARGUMENTS.pop(0)
+            PROCESSES = int(ARGUMENTS.pop(0))
         elif arg == '-r':
-            REQUESTS = ARGUMENTS.pop(0)
+            REQUESTS = int(ARGUMENTS.pop(0))
         else:
             usage(1)
 
@@ -76,7 +62,8 @@ if __name__ == '__main__':
     # Create pool of workers and perform requests
     pool = multiprocessing.Pool(PROCESSES)
     #results = pool.map(do_request, range(REQUESTS))
-    results = pool.map(do_request, range(PROCESSES))
+    p = int(PROCESSES)
+    results = pool.map(do_request, range(p))
 
     avg_time = 0
     for r in results:
