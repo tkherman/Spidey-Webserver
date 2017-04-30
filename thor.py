@@ -26,13 +26,21 @@ def usage(status=0):
     sys.exit(status)
 
 def do_request(pid):
-    #r = requests.get(URL).text.rstrip()
-    start = time.time()
-    r = requests.get(URL)
-    end = time.time()
-    if VERBOSE:
-        print r.text.rstrip()
-    return (end - start)
+    totalSumAvg = 0
+    for p in range(PROCESSES):
+        sum4avg = 0
+        for req in range(REQUESTS):
+            start = time.time()
+            r = requests.get(URL)
+            end = time.time()
+            sum4avg = sum4avg + (end - start)
+            if VERBOSE:
+                print r.text.rstrip()
+            print("Process: {}, Request: {}, Elapsed Time: {}".format(p, req, end-start))
+        print("Process: {}, Request:  , Elapsed Time: {}".format(p, sum4avg/REQUESTS))
+        totalSumAvg = totalSumAvg + sum4avg/REQUESTS
+    print("TOTAL AVERAGE ELAPSED TIME: {}".format(totalSumAvg/PROCESSES))
+
 
 # Main execution
 
@@ -56,7 +64,7 @@ if __name__ == '__main__':
 
     # Create pool of workers and perform requests
     pool = multiprocessing.Pool(PROCESSES)
-    pool.map(do_request, URL, REQUESTS)
+    results = pool.map(do_request, REQUESTS)
 
 
     
