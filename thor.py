@@ -29,6 +29,7 @@ def usage(status=0):
 
 
 def do_request(pid):
+<<<<<<< HEAD
     sumOfTime = 0
     for r in range(REQUESTS):
         start = time.time()
@@ -68,7 +69,6 @@ if __name__ == '__main__':
 
     # Create pool of workers and perform requests
     pool = multiprocessing.Pool(PROCESSES)
-    #results = itertools.chain.from_iterable(
     results = pool.imap(do_request, range(PROCESSES))
 
     avg_time = 0
