@@ -23,6 +23,6 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "%d\n", a);
         free_request(r);
     }
-    close(server_fd);
-    
+
+    return EXIT_SUCCESS;
 }

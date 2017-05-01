@@ -82,7 +82,7 @@ free_request(struct request *r)
     }
 
     /* Close socket or fd */
-    close(r->fd);
+    //close(r->fd);
     fclose(r->file);
 
     /* Free allocated strings */
@@ -113,6 +113,8 @@ free_request(struct request *r)
 
     /* Free request */
     free(r);
+
+    return;
 }
 
 /**
@@ -218,12 +220,18 @@ parse_request_headers(struct request *r)
     char *value;
     
     /* Parse headers from socket */
-    while (fgets(buffer, BUFSIZ, r->file)) {
+    while (fgets(buffer, BUFSIZ, r->file) && strlen(buffer) > 2) {
         struct header *new_header = calloc(1, sizeof(struct header));
-
-        char *delimPtr = strchr(buffer, ':');
+        
+        // set key
+        char *delimPtr; 
+        if ((delimPtr = strchr(buffer, ':')) == NULL)
+            goto fail;
         *delimPtr = '\0';
         name = strdup(buffer);
+        
+        // set value
+        delimPtr++;
         delimPtr = skip_whitespace(delimPtr);
         chomp(delimPtr);
         value = strdup(delimPtr);
@@ -231,16 +239,17 @@ parse_request_headers(struct request *r)
         new_header->name = name;
         new_header->value = value;
         
-        if (curr != NULL)
+        if (curr != NULL) {
             curr->next = new_header;
-        curr = new_header;
-        new_header->next = NULL;
-    	debug("HTTP HEADER %s = %s", header->name, header->value);
-        
+            curr = new_header;
+            new_header->next = NULL;
+        } else {
+            r->headers = new_header;
+            curr = new_header;
+            new_header->next = NULL;
+        }
     }
-
-    if (strlen(buffer) > 2 && strcmp(buffer, "\r\n"))
-        goto fail;
+    
 
 
 #ifndef NDEBUG
@@ -248,6 +257,7 @@ parse_request_headers(struct request *r)
     	debug("HTTP HEADER %s = %s", header->name, header->value);
     }
 #endif
+    
     return 0;
 
 fail:

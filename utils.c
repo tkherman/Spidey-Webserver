@@ -43,8 +43,8 @@ determine_mimetype(const char *path)
 
     /* Scan file for matching file extensions */
    
-fail:
-    mimetype = DefaultMimeType;
+//fail:
+    //mimetype = DefaultMimeType;
 
 done:
     if (fs) {
@@ -125,7 +125,7 @@ skip_nonwhitespace(char *s)
 char *
 skip_whitespace(char *s)
 {
-    while(isspace(*s))
+    while(*s == ' ' || *s == '\t')
         s++;
 
     return s;
