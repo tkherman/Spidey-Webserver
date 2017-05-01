@@ -82,7 +82,7 @@ free_request(struct request *r)
     }
 
     /* Close socket or fd */
-    close(r->fd);
+    //close(r->fd);
     fclose(r->file);
 
     /* Free allocated strings */
@@ -113,6 +113,8 @@ free_request(struct request *r)
 
     /* Free request */
     free(r);
+
+    return;
 }
 
 /**
@@ -125,11 +127,11 @@ int
 parse_request(struct request *r)
 {
     /* Parse HTTP Request Method */
-    if (parse_request_method(r))
+    if (parse_request_method(r) == -1)
         return -1;
 
     /* Parse HTTP Requet Headers*/
-    if (parse_request_headers(r))
+    if (parse_request_headers(r) == -1)
         return -1;
 
     return 0;
@@ -169,7 +171,8 @@ parse_request_method(struct request *r)
     char *ptr = strchr(r->uri, '?');
     if (ptr) {
         *ptr = '\0';
-        r->query = ++ptr;
+        ptr++;
+        r->query = strdup(ptr);
     }
 
     /* Record method, uri, and query in request struct */
@@ -218,12 +221,18 @@ parse_request_headers(struct request *r)
     char *value;
     
     /* Parse headers from socket */
-    while (fgets(buffer, BUFSIZ, r->file) && strchr(buffer, ':')) {
+    while (fgets(buffer, BUFSIZ, r->file) && strlen(buffer) > 2) {
         struct header *new_header = calloc(1, sizeof(struct header));
-
-        char *delimPtr = strchr(buffer, ':');
+        
+        // set key
+        char *delimPtr; 
+        if ((delimPtr = strchr(buffer, ':')) == NULL)
+            goto fail;
         *delimPtr = '\0';
         name = strdup(buffer);
+        
+        // set value
+        delimPtr++;
         delimPtr = skip_whitespace(delimPtr);
         chomp(delimPtr);
         value = strdup(delimPtr);
@@ -231,20 +240,25 @@ parse_request_headers(struct request *r)
         new_header->name = name;
         new_header->value = value;
         
-        if (curr != NULL)
+        if (curr != NULL) {
             curr->next = new_header;
-        curr = new_header;
-        new_header->next = NULL;
+            curr = new_header;
+            new_header->next = NULL;
+        } else {
+            r->headers = new_header;
+            curr = new_header;
+            new_header->next = NULL;
+        }
     }
+    
 
-    if (strlen(buffer) > 2)
-        goto fail;
 
 #ifndef NDEBUG
     for (struct header *header = r->headers; header != NULL; header = header->next) {
     	debug("HTTP HEADER %s = %s", header->name, header->value);
     }
 #endif
+    
     return 0;
 
 fail:

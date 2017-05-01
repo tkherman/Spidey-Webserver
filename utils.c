@@ -42,6 +42,7 @@ determine_mimetype(const char *path)
     /* Open MimeTypesPath file */
     fs = fopen("/etc/mime.types", "r");
     /* Scan file for matching file extensions */
+<<<<<<< HEAD
     while (fgets(buffer, BUFSIZ, fs)) {
         mimetype = strtok(buffer, " \t")
         char *p = skip_whitespace(buffer + mimetype); //check this line
@@ -142,7 +143,7 @@ skip_nonwhitespace(char *s)
 char *
 skip_whitespace(char *s)
 {
-    while(isspace(*s))
+    while(*s == ' ' || *s == '\t')
         s++;
 
     return s;

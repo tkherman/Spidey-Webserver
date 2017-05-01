@@ -21,7 +21,7 @@ single_server(int sfd)
         request = accept_request(sfd);
 
 	/* Handle request */
-        handle_request(request)
+        handle_request(request);
 
 	/* Free request */
         free_request(request);

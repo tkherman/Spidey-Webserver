@@ -10,6 +10,10 @@ spidey: forking.o handler.o request.o single.o socket.o spidey.o utils.o
 	@echo Linking spidey...
 	@$(LD) $(LDFLAGS) -o $@ $^
 
+test_request: test_request.o request.o socket.o utils.o
+	@echo Linking test_request...
+	@$(LD) $(LDFLAGS) -o $@ $^
+
 forking.o: forking.c spidey.h
 	@echo Compiling forking.o...
 	@$(CC) $(CFLAGS) -o $@ -c $<
@@ -38,8 +42,12 @@ utils.o: utils.c spidey.h
 	@echo Compiling utils.o...
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
+test_request.o: test_request.c spidey.h
+	@echo Compiling test_request.o...
+	$(CC) $(CFLAGS) -o $@ -c $<
+
 clean:
 	@echo Cleaning...
-	@rm -f $(TARGETS) *.o *.log *.input
+	@rm -f $(TARGETS) *.o *.log *.input test_request
 
 .PHONY:		all clean
