@@ -36,13 +36,23 @@ determine_mimetype(const char *path)
     char *token;
     char buffer[BUFSIZ];
     FILE *fs = NULL;
-    
+
     /* Find file extension */
-
+    ext = strchr(path, '.');
     /* Open MimeTypesPath file */
-
+    fs = fopen("/etc/mime.types", "r");
     /* Scan file for matching file extensions */
-   
+    while (fgets(buffer, BUFSIZ, fs)) {
+        mimetype = strtok(buffer, " \t")
+        char *p = skip_whitespace(buffer + mimetype); //check this line
+        for (char *a = strtok(p, " "); a!= NULL; a = strtok(NULL, " ")) {
+            token = a;
+            if (streq(token, ext)) goto done;
+        }
+    }
+    goto fail;
+    goto done;
+
 fail:
     mimetype = DefaultMimeType;
 
@@ -71,7 +81,14 @@ determine_request_path(const char *uri)
     char path[BUFSIZ];
     char real[BUFSIZ];
 
-    return strdup(real);
+    //path = ...
+
+    char *res = realpath(uri, real) 
+    if (res) return strdup(real);
+    else {
+        perror("realpath");
+        return EXIT_FAILURE;
+    }
 }
 
 /**
