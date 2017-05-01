@@ -171,7 +171,8 @@ parse_request_method(struct request *r)
     char *ptr = strchr(r->uri, '?');
     if (ptr) {
         *ptr = '\0';
-        r->query = ++ptr;
+        ptr++;
+        r->query = strdup(ptr);
     }
 
     /* Record method, uri, and query in request struct */

@@ -48,6 +48,6 @@ test_request.o: test_request.c spidey.h
 
 clean:
 	@echo Cleaning...
-	@rm -f $(TARGETS) *.o *.log *.input
+	@rm -f $(TARGETS) *.o *.log *.input test_request
 
 .PHONY:		all clean

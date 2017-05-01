@@ -19,8 +19,7 @@ int main(int argc, char *argv[]) {
             continue;
         
         debug("Handling client request");
-        int a = parse_request(r);
-        fprintf(stderr, "%d\n", a);
+        parse_request(r);
         free_request(r);
     }
 
