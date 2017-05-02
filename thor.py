@@ -63,7 +63,10 @@ if __name__ == '__main__':
         else:
             usage(1)
 
-    URL = ARGUMENTS.pop(0)
+    if len(ARGUMENTS):
+        URL = ARGUMENTS.pop(0)
+    else:
+        usage(1)
 
 
     # Create pool of workers and perform requests
