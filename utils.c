@@ -39,20 +39,29 @@ determine_mimetype(const char *path)
 
     /* Find file extension */
     ext = strchr(path, '.');
+    if (ext)
+        ext++;
+    else
+        goto fail;
+
     /* Open MimeTypesPath file */
     fs = fopen("/etc/mime.types", "r");
+    
     /* Scan file for matching file extensions */
-<<<<<<< HEAD
     while (fgets(buffer, BUFSIZ, fs)) {
-        mimetype = strtok(buffer, " \t")
-        char *p = skip_whitespace(buffer + mimetype); //check this line
-        for (char *a = strtok(p, " "); a!= NULL; a = strtok(NULL, " ")) {
-            token = a;
-            if (streq(token, ext)) goto done;
+        // if the line starts with #, skip it
+        if (*buffer == '#')
+            continue;
+        
+        token = strtok(buffer, " \t")
+        mimetype = token;
+        while (token != NULL) {
+            if (streq(token, ext))
+                goto done;
+            token = strtok(NULL, " \t");
         }
+        
     }
-    goto fail;
-    goto done;
 
 fail:
     mimetype = DefaultMimeType;
