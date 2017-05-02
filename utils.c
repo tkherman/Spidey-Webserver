@@ -82,14 +82,14 @@ determine_request_path(const char *uri)
     char path[BUFSIZ];
     char real[BUFSIZ];
 
-    //path = ...
-
-    char *res = realpath(uri, real) 
-    if (res) return strdup(real);
-    else {
-        perror("realpath");
-        return EXIT_FAILURE;
-    }
+    real = realpath(uri, real);
+    
+    
+    char *ret = strstr(real, RootPath);
+    if (ret != real || ret == NULL)
+        return NULL;
+    
+    return strdup(real);
 }
 
 /**
@@ -109,6 +109,19 @@ determine_request_type(const char *path)
     struct stat s;
     request_type type;
 
+    stat(path, &s);
+    if (S_ISDIR(s.st_mode))
+        type = REQUEST_BROWSE;
+    else if (S_ISREG(s.st_mode)) {
+        if (access(path, X_OK) == 0)
+            type = REQUEST_CGI;
+        else if (access(path, R_OK) == 0)
+            type = REQUEST_FILE;
+        else
+            type = REQUEST_BAD;
+    } else
+        type = REQUEST_BAD;
+
     return (type);
 }
 
@@ -121,6 +134,7 @@ const char *
 http_status_string(http_status status)
 {
     const char *status_string;
+
 
     return status_string;
 }
