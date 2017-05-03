@@ -169,8 +169,14 @@ handle_error(struct request *r, http_status status)
     const char *status_string = http_status_string(status);
 
     /* Write HTTP Header */
+    fprintf(r->file, "HTTP/1.0 %s\n",status_string);
+    fprintf(r->file, "Content-Type: text/html\n");
+    fprintf(r->file, "\r\n");
 
     /* Write HTML Description of Error*/
+    fprintf(r->file, "<h1>%s</h1>",status_string);
+    fprintf(r->file, "<p>Who do you call when shit hits the fan?</p>");
+
 
     /* Return specified status */
     return status;
