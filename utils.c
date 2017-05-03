@@ -39,20 +39,29 @@ determine_mimetype(const char *path)
 
     /* Find file extension */
     ext = strchr(path, '.');
+    if (ext)
+        ext++;
+    else
+        goto fail;
+
     /* Open MimeTypesPath file */
     fs = fopen("/etc/mime.types", "r");
+    
     /* Scan file for matching file extensions */
-<<<<<<< HEAD
     while (fgets(buffer, BUFSIZ, fs)) {
-        mimetype = strtok(buffer, " \t")
-        char *p = skip_whitespace(buffer + mimetype); //check this line
-        for (char *a = strtok(p, " "); a!= NULL; a = strtok(NULL, " ")) {
-            token = a;
-            if (streq(token, ext)) goto done;
+        // if the line starts with #, skip it
+        if (*buffer == '#')
+            continue;
+        
+        token = strtok(buffer, " \t");
+        mimetype = token;
+        while (token != NULL) {
+            if (streq(token, ext))
+                goto done;
+            token = strtok(NULL, " \t");
         }
+        
     }
-    goto fail;
-    goto done;
 
 fail:
     mimetype = DefaultMimeType;
@@ -82,14 +91,19 @@ determine_request_path(const char *uri)
     char path[BUFSIZ];
     char real[BUFSIZ];
 
-    //path = ...
+    sprintf(path, "%s%s", RootPath, uri);
 
-    char *res = realpath(uri, real) 
-    if (res) return strdup(real);
-    else {
-        perror("realpath");
-        return EXIT_FAILURE;
-    }
+    realpath(path, real);
+    
+    puts(uri);
+    puts(real);
+    puts("\n");
+
+    char *ret = strstr(real, RootPath);
+    if (ret != real || ret == NULL)
+        return NULL;
+    
+    return strdup(real);
 }
 
 /**
@@ -109,6 +123,19 @@ determine_request_type(const char *path)
     struct stat s;
     request_type type;
 
+    stat(path, &s);
+    if (S_ISDIR(s.st_mode))
+        type = REQUEST_BROWSE;
+    else if (S_ISREG(s.st_mode)) {
+        if (access(path, X_OK) == 0)
+            type = REQUEST_CGI;
+        else if (access(path, R_OK) == 0)
+            type = REQUEST_FILE;
+        else
+            type = REQUEST_BAD;
+    } else
+        type = REQUEST_BAD;
+
     return (type);
 }
 
@@ -120,8 +147,17 @@ determine_request_type(const char *path)
 const char *
 http_status_string(http_status status)
 {
-    const char *status_string;
-
+    const char * status_string;
+    if(status == HTTP_STATUS_OK)
+        status_string = "200 OK";
+    else if(status == HTTP_STATUS_BAD_REQUEST)
+        status_string = "400 Bad Request";
+    else if(status == HTTP_STATUS_NOT_FOUND)
+        status_string = "404 Not Found";
+    else if(status == HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        status_string = "500 Internal Server Error";
+    else
+        status_string = "Other Error";
     return status_string;
 }
 

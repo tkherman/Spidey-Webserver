@@ -165,7 +165,7 @@ parse_request_method(struct request *r)
     /* Parse method and uri */
     r->method = strdup(strtok(buffer, " \t\n"));
     r->uri = strdup(strtok(NULL, " \t\n"));
-    
+
 
     /* Parse query from uri */
     char *ptr = strchr(r->uri, '?');
