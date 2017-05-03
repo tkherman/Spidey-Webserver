@@ -42,55 +42,57 @@ main(int argc, char *argv[])
     int sfd;
 
     /* Parse command line options */
+    char * progname = argv[0];
     int argind = 1;
     while (argind < argc && strlen(argv[argind]) > 1 && argv[argind][0] == '-') {
         char *arg = argv[argind++];
         switch (arg[1]) {
             case 'h':
-                usage(0);
+                usage(progname, 0);
                 break;
             case 'c': //specify concurrency mode
                 if(argind < argc) {
                     if(streq(argv[argind], "SINGLE")) //default (do nothing)
-                    else if(streq(argv[argind], "FORKING"))
+                        break;
+                    if(streq(argv[argind], "FORKING"))
                         ConcurrencyMode = FORKING;
                     else
-                        usage(1);
+                        usage(progname, 1);
                     argind++;
                 } else {
-                    usage(1);
+                    usage(progname, 1);
                 }
                 break;
             case 'm': //set mimetype path
                 if(argind < argc) {
                     MimeTypesPath = argv[argind++];
                 } else {
-                    usage(1);
+                    usage(progname, 1);
                 }
                 break;
             case 'M': //set mimetype
                 if(argind < argc) {
                     DefaultMimeType = argv[argind++];
                 } else {
-                    usage(1);
+                    usage(progname, 1);
                 }
                 break;
             case 'p': //set port 
                 if(argind < argc) {
                     Port = argv[argind++];
                 } else {
-                    usage(1);
+                    usage(progname, 1);
                 }
                 break;
             case 'r': //set path 
                 if(argind < argc) {
                     RootPath = argv[argind++];
                 } else {
-                    usage(1);
+                    usage(progname, 1);
                 }
                 break;
             default:
-                usage(1);
+                usage(progname, 1);
                 break;
         }
     }
