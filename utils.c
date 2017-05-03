@@ -91,12 +91,12 @@ determine_request_path(const char *uri)
     char path[BUFSIZ];
     char real[BUFSIZ];
 
-    sprintf(path, "./%s%s", RootPath, uri);
+    sprintf(path, "%s%s", RootPath, uri);
 
     realpath(path, real);
     
     char *ret = strstr(real, RootPath);
-    if (ret == real || ret == NULL)
+    if (ret != real || ret == NULL)
         return NULL;
     
     return strdup(real);
