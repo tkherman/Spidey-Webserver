@@ -57,9 +57,15 @@ if __name__ == '__main__':
         elif arg == '-v':
             VERBOSE = True
         elif arg == '-p':
-            PROCESSES = int(ARGUMENTS.pop(0))
+            if len(ARGUMENTS) and not ARGUMENTS[0].startswith('-'):
+                PROCESSES = int(ARGUMENTS.pop(0))
+            else:
+                usage(1)
         elif arg == '-r':
-            REQUESTS = int(ARGUMENTS.pop(0))
+            if len(ARGUMENTS) and not ARGUMENTS[0].startswith('-'):
+                REQUESTS = int(ARGUMENTS.pop(0))
+            else:
+                usage(1)
         else:
             usage(1)
 

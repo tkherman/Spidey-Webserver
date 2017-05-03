@@ -143,9 +143,17 @@ determine_request_type(const char *path)
 const char *
 http_status_string(http_status status)
 {
-    const char *status_string;
-
-
+    const char * status_string;
+    if(status == HTTP_STATUS_OK)
+        status_string = "OK";
+    else if(status == HTTP_STATUS_BAD_REQUEST)
+        status_string = "Bad Request";
+    else if(status == HTTP_STATUS_NOT_FOUND)
+        status_string = "Not Found";
+    else if(status == HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        status_string = "Internal Server Error";
+    else
+        status_string = "Other Error";
     return status_string;
 }
 
