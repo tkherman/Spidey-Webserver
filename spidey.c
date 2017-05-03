@@ -38,7 +38,6 @@ usage(const char *progname, int status)
 int
 main(int argc, char *argv[])
 {
-    int c;
     int sfd;
 
     /* Parse command line options */
@@ -98,8 +97,15 @@ main(int argc, char *argv[])
     }
 
     /* Listen to server socket */
-
+    sfd = socket_listen(Port);
+    if(ConcurrencyMode == SINGLE)
+        single_server(sfd);
+    else
+        forking_server(sfd);
+    
     /* Determine real RootPath */
+    RootPath = realpath(RootPath, NULL);
+
 
     log("Listening on port %s", Port);
     debug("RootPath        = %s", RootPath);

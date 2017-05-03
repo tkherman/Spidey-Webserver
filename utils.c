@@ -95,6 +95,10 @@ determine_request_path(const char *uri)
 
     realpath(path, real);
     
+    puts(uri);
+    puts(real);
+    puts("\n");
+
     char *ret = strstr(real, RootPath);
     if (ret != real || ret == NULL)
         return NULL;
