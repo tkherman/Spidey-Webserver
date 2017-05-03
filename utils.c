@@ -53,7 +53,7 @@ determine_mimetype(const char *path)
         if (*buffer == '#')
             continue;
         
-        token = strtok(buffer, " \t")
+        token = strtok(buffer, " \t");
         mimetype = token;
         while (token != NULL) {
             if (streq(token, ext))
@@ -91,11 +91,12 @@ determine_request_path(const char *uri)
     char path[BUFSIZ];
     char real[BUFSIZ];
 
-    real = realpath(uri, real);
-    
+    sprintf(path, "./%s%s", RootPath, uri);
+
+    realpath(path, real);
     
     char *ret = strstr(real, RootPath);
-    if (ret != real || ret == NULL)
+    if (ret == real || ret == NULL)
         return NULL;
     
     return strdup(real);
