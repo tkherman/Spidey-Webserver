@@ -29,9 +29,13 @@ handle_request(struct request *r)
     http_status result;
 
     /* Parse request */
+
+    parse_request(r);
+
     if (parse_request(r) < 0) {
         result = handle_error(r, HTTP_STATUS_BAD_REQUEST);
     }
+
 
     /* Determine request path */
     r->path = determine_request_path(r->uri);
