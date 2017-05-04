@@ -92,7 +92,7 @@ handle_browse_request(struct request *r)
     fprintf(r->file, "<ul>\n");
     while (n--) {
         char link[200];
-        sprintf(link, "%s:%s/%s", "localhost", Port, entries[n]->d_name);
+        sprintf(link, "%s%s/", r->uri, entries[n]->d_name);
         debug("link: %s", link);
         fprintf(r->file, "<li><a href=\"%s\">%s</a></li>\n", link, entries[n]->d_name);
         free(entries[n]);
@@ -129,18 +129,23 @@ handle_file_request(struct request *r)
     /* Determine mimetype */
     mimetype = determine_mimetype(r->path);
 
+    debug("Mimetype = %s", mimetype);
+
     /* Write HTTP Headers with OK status and determined Content-Type */
     fprintf(r->file, "HTTP/1.0 200 OK\n");
-    fprintf(r->file, "%s\n", mimetype);
+    fprintf(r->file, "Content: %s\n", mimetype);
     fprintf(r->file, "\r\n");
 
     /* Read from file and write to socket in chunks */
     while (!feof(fs)) {
         // read from file to buffer
-        nread = fread(buffer, BUFSIZ, 1, fs);
+        nread = fread(buffer, 1, BUFSIZ, fs);
+        
 
         // write to client file from buffer
-        fwrite(buffer, nread, 1, r->file);        
+        size_t write_success = fwrite(buffer, 1, nread, r->file);
+        debug("Nread = %zu", nread);
+        debug("Write_success = %zu", write_success);
     }
 
     /* Close file, flush socket, deallocate mimetype, return OK */

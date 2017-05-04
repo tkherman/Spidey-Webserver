@@ -38,9 +38,11 @@ determine_mimetype(const char *path)
     FILE *fs = NULL;
 
     /* Find file extension */
-    ext = strchr(path, '.');
-    if (ext)
+    ext = strrchr(path, '.');
+    if (ext) {
         ext++;
+        debug("File Extension = %s", ext);
+    }
     else
         goto fail;
 
