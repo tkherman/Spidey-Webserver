@@ -29,7 +29,7 @@ socket_listen(const char *port)
     hints.ai_flags = AI_PASSIVE;
     int s;
     if ((s = getaddrinfo(host, port, &hints, &results) != 0)) {
-        fprintf(stderr, "getaddrinfo failed: %s\n", gai_strerror(s));
+        debug("getaddrinfo failed: %s\n", gai_strerror(s));
         return -1;
     }
 
@@ -38,14 +38,14 @@ socket_listen(const char *port)
         /* Allocate socket */
         
         if ((socket_fd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) < 0) {
-            fprintf(stderr, "Unable to make socket: %s\n", strerror(errno));
+            debug("Unable to make socket: %s\n", strerror(errno));
             continue;
         }
 
 	    /* Bind socket */
 
         if (bind(socket_fd, p->ai_addr, p->ai_addrlen) < 0) {
-            fprintf(stderr, "Unable to bind: %s\n", strerror(errno));
+            debug("Unable to bind: %s\n", strerror(errno));
             close(socket_fd);
             socket_fd = -1;
             continue;
@@ -54,7 +54,7 @@ socket_listen(const char *port)
     	/* Listen to socket */
     
         if (listen(socket_fd, SOMAXCONN) < 0) {
-            fprintf(stderr, "Unable to listen: %s\n", strerror(errno));
+            debug("Unable to listen: %s\n", strerror(errno));
             close(socket_fd);
             socket_fd = -1;
             continue;
