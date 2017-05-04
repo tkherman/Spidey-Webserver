@@ -83,7 +83,8 @@ free_request(struct request *r)
 
     /* Close socket or fd */
     //close(r->fd);
-    fclose(r->file);
+    if (r->file != NULL)
+        fclose(r->file);
 
     /* Free allocated strings */
     free(r->method);
