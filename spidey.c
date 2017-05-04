@@ -9,7 +9,7 @@
 #include <unistd.h>
 
 /* Global Variables */
-char *Port	      = "9898";
+char *Port	      = "9978";
 char *MimeTypesPath   = "/etc/mime.types";
 char *DefaultMimeType = "text/plain";
 char *RootPath	      = "www";
