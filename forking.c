@@ -20,7 +20,8 @@ forking_server(int sfd)
     struct request *request;
     pid_t pid;
 
-    signal(SIGCHLD,SIG_IGN);
+    //Ignore children
+    signal(SIGCHLD, SIG_IGN);
 
     /* Accept and handle HTTP request */
     while (true) {
@@ -29,8 +30,8 @@ forking_server(int sfd)
         request = accept_request(sfd);
         if (request == NULL)
             continue;
-        /* Ignore children */
-        
+        /* Ignore children */ //done above
+        //signal(SIGCHLD, SIG_IGN);
 
 	/* Fork off child process to handle request */
         pid = fork();
