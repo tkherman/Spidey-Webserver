@@ -30,7 +30,6 @@ handle_request(struct request *r)
 
     /* Parse request */
 
-
     if (parse_request(r) < 0) {
         result = handle_error(r, HTTP_STATUS_BAD_REQUEST);
     }
