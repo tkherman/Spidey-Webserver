@@ -18,7 +18,7 @@
 int
 socket_listen(const char *port)
 {
-    struct addrinfo  hints;
+    struct addrinfo  hints = {0};
     struct addrinfo *results;
     int    socket_fd = -1;
     char *host = NULL;
