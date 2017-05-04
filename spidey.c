@@ -99,9 +99,10 @@ main(int argc, char *argv[])
 
     /* Listen to server socket */
     sfd = socket_listen(Port);
-    if (sfd == -1)
+    if (sfd == -1) {
         debug("socket_listen fails");
-
+        return EXIT_FAILURE;
+    }
     
     /* Determine real RootPath */
     RootPath = realpath(RootPath, NULL);
