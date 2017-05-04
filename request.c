@@ -90,14 +90,18 @@ free_request(struct request *r)
     free(r->method);
     free(r->uri);
     free(r->path);
-    free(r->query);
+    if (r->query != NULL)
+        free(r->query);
 
     /* Free headers */
     struct header *curr, *next;
-    curr = r->headers;
-    next = curr->next;
-    
     bool all_deleted = false;
+    curr = r->headers;
+    if (curr != NULL)
+        next = curr->next;
+    else
+        all_deleted = true;
+    
     while (!all_deleted) {
         free(curr->name);
         free(curr->value);
