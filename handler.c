@@ -30,8 +30,6 @@ handle_request(struct request *r)
 
     /* Parse request */
 
-    parse_request(r);
-
     if (parse_request(r) < 0) {
         result = handle_error(r, HTTP_STATUS_BAD_REQUEST);
     }
@@ -91,6 +89,9 @@ handle_browse_request(struct request *r)
     /* For each entry in directory, emit HTML list item */
     fprintf(r->file, "<ul>\n");
     while (n--) {
+        //if (streq(entries[n]->d_name, "."))
+        //    continue;
+
         char link[200];
         sprintf(link, "%s%s/", r->uri, entries[n]->d_name);
         debug("link: %s", link);
