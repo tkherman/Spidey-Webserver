@@ -87,7 +87,10 @@ handle_browse_request(struct request *r)
     /* For each entry in directory, emit HTML list item */
     fprintf(r->file, "<ul>\n");
     while (n--) {
-        fprintf(r->file, "<li>%s</li>\n", entries[n]->d_name);
+        char link[200];
+        sprintf(link, "%s:%s/%s", "localhost", Port, entries[n]->d_name);
+        debug("link: %s", link);
+        fprintf(r->file, "<li><a href=\"%s\">%s</a></li>\n", link, entries[n]->d_name);
         free(entries[n]);
     }
     fprintf(r->file, "</ul>\n");

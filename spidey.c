@@ -96,8 +96,12 @@ main(int argc, char *argv[])
         }
     }
 
+
     /* Listen to server socket */
     sfd = socket_listen(Port);
+    if (sfd == -1)
+        debug("socket_listen fails");
+
     
     /* Determine real RootPath */
     RootPath = realpath(RootPath, NULL);
