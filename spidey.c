@@ -51,11 +51,9 @@ main(int argc, char *argv[])
                 break;
             case 'c': //specify concurrency mode
                 if(argind < argc) {
-                    if(streq(argv[argind], "SINGLE")) //default (do nothing)
-                        break;
                     if(streq(argv[argind], "FORKING"))
                         ConcurrencyMode = FORKING;
-                    else
+                    else if (strcmp(argv[argind], "SINGLE"))
                         usage(progname, 1);
                     argind++;
                 } else {
