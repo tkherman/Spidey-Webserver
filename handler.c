@@ -145,8 +145,8 @@ handle_file_request(struct request *r)
 
         // write to client file from buffer
         size_t write_success = fwrite(buffer, 1, nread, r->file);
-        debug("Nread = %zu", nread);
-        debug("Write_success = %zu", write_success);
+        //debug("Nread = %zu", nread);
+        //debug("Write_success = %zu", write_success);
     }
 
     /* Close file, flush socket, deallocate mimetype, return OK */

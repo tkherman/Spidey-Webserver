@@ -14,7 +14,7 @@ for i in 1 2 4; do
     echo Time taken with $i processes: $ITIME
     COUNT=$(echo "$COUNT + $ITIME" | bc)
 done
-echo "Total time it took to run Directory Listing: $COUNT"
+echo "Sum of average time it took to run Directory Listing: $COUNT"
 echo
 echo
 
@@ -28,7 +28,7 @@ for i in 1 2 4; do
     echo Time taken with $i processes: $ITIME
     COUNT=$(echo "$COUNT + $ITIME" | bc)
 done
-echo "Total time it took to get Static File: $COUNT"
+echo "Sum of average time it took to get Static File: $COUNT"
 echo
 echo
 
@@ -42,7 +42,7 @@ for i in 1 2 4; do
     echo Time taken with $i processes: $ITIME
     COUNT=$(echo "$COUNT + $ITIME" | bc)
 done
-echo "Total time it took to run CGI Script: $COUNT"
+echo "Sum of average time it took to run CGI Script: $COUNT"
 echo
 echo
 
