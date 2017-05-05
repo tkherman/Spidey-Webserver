@@ -1,3 +1,0 @@
-Average Single Directory Listing Time: .02992386758323
-Average Single Static files Time: .03016402959822
-Average Single CGI Scripts Time: .0929636865854
