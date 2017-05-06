@@ -234,7 +234,7 @@ Kendyll:
         debugged forking.c
         general debugging
         testThor.sh which was modified later by Herman 
-                        to separate latency and throughput tests
+            to separate latency and throughput tests
         README.md
 
 John:
@@ -242,7 +242,8 @@ John:
         fixed problem with thor.py
         part of utils.c
         general debugging
-        did substantial amount of experimental testing and helped modify testLatency.sh and testThroughput.sh
+        did substantial amount of experimental testing and helped modify 
+            testLatency.sh and testThroughput.sh
         spidey.c
         helped write handler.c
         README.md
