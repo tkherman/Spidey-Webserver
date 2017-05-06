@@ -229,50 +229,31 @@ Contributions
 Kendyll:
 
         Makefile
-        
         thor.py
-        
         part of utils.c
-        
         debugged forking.c
-        
         general debugging
-        
         testThor.sh which was modified later by Herman 
                         to separate latency and throughput tests
-
         README.md
 
 John:
 
         fixed problem with thor.py
-        
         part of utils.c
-        
         general debugging
-        
-        did substantial amount of experimental testing
-                and helped modify testLatency.sh and testThroughput.sh
-        
+        did substantial amount of experimental testing and helped modify testLatency.sh and testThroughput.sh
         spidey.c
-        
         helped write handler.c
-        
         README.md
 
 Herman:
         
         forking.c
         single.c
-        
         testLatency.sh and testThroughput.sh
-        
         helped write handler.c
-        
         request.c
-        
         part of utils.c
-        
         socket.c
-        
         general debugging
