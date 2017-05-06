@@ -10,6 +10,9 @@ Members
 
 Summary
 -------
+Our group was able to implement the browse request, CGI request, and the file request.  All of these options worked in both single and forking mode.  We were able to get everything working.  Work was divided amongst group members by each taking separate functions (or programs in the case of thor.py).  Once we had all of the functions written, we all got together to debug program in its entirety.  There was some testing along the way as well to make sure that each function worked individually.
+
+We went about measuring the average latency of the different types of requests by measuring the latency using 1, 2, and 4 processes on 100 requests to get a directory, static file, or CGI script.  We used thor.py to make all of these requests and get an average time.  Our shell script then took the average of all of the processes' average time.  We went about measuring the average throughput by creating dummy directories 1KB, 1MB, and 1GB in size.  Our shell script divided the total average by the size of the directory to get the throughput.
 
 Latency
 -------
@@ -128,9 +131,22 @@ Average throughput: 53792284 bytes/second
 
 Analysis
 --------
+In latency testing, we got comparable value for single and forking mode.  This is because the size of the requests did not make a huge difference between the speeds of the modes.  However, in throughput testing, we did see a difference between the modes with the different sizes.  Forking actually took longer than single because the overhead was higher than the actual speed gain from forking.  This is the difference between theoretical speed differences and actual speed differences.  Theoretically, forking should have been must faster but in reality, the overhead was too costly to make a difference.  With a bigger size than 1GB, it can be assumed that forking would be faster because the single and forking throughput for that size was the same.
 
 Conclusion
 ----------
+In this assignment, we practiced using low-level system calls related to sockets and networking.  We also learned about costs of forking and how theory can be different from practice depending on the resources.
 
 Contributions
 -------------
+Kendyll:
+	Makefile
+	thor.py
+	part of utils.c
+	debugging
+	testThor.sh which was modified later by Herman to separate latency and throughput tests
+	README.md
+	
+John:
+
+Herman:
