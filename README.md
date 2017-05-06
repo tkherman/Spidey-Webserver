@@ -258,3 +258,6 @@ Herman:
         part of utils.c
         socket.c
         general debugging
+
+John and Herman:
+		thumbnail of Kendyll (ouch)
