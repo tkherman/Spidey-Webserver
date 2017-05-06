@@ -38,7 +38,7 @@ handle_request(struct request *r)
     /* Determine request path */
     r->path = determine_request_path(r->uri);
     if (r->path == NULL) {
-        result = handle_error(r, HTTP_STATUS_BAD_REQUEST);
+        result = handle_error(r, HTTP_STATUS_NOT_FOUND);
     }
     debug("HTTP REQUEST PATH: %s", r->path);
 
@@ -52,7 +52,7 @@ handle_request(struct request *r)
     else if (type == REQUEST_FILE)
         result = handle_file_request(r);
     else
-        result = handle_error(r, HTTP_STATUS_BAD_REQUEST);
+        result = handle_error(r, HTTP_STATUS_NOT_FOUND);
         
 
     log("HTTP REQUEST STATUS: %s", http_status_string(result));
