@@ -95,7 +95,10 @@ handle_browse_request(struct request *r)
         char link[200];
         sprintf(link, "%s%s/", r->uri, entries[n]->d_name);
         debug("link: %s", link);
-        fprintf(r->file, "<li><a href=\"%s\">%s</a></li>\n", link, entries[n]->d_name);
+        //fprintf(r->file, "<li><a href=\"%s\">%s</a></li>\n", link, entries[n]->d_name);
+        //fprintf(r->file, "<li><a href=\"%s\"><img src=\"/afs/nd.edu/user4/jmcguin1/Public/kkraus.jpeg\" width=\"100\" height=\"140\" /> %s</a></li>\n",
+        fprintf(r->file, "<li><a href=\"%s\"><img src=\"https://i.groupme.com/504x895.jpeg.273f5b5d856448ac8af58277d6578a16.large\" width=\"100\" height=\"140\" /> %s</a></li>\n",
+            link, entries[n]->d_name);
         free(entries[n]);
     }
     fprintf(r->file, "</ul>\n");
