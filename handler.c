@@ -147,7 +147,7 @@ handle_file_request(struct request *r)
         
 
         // write to client file from buffer
-        size_t write_success = fwrite(buffer, 1, nread, r->file);
+        fwrite(buffer, 1, nread, r->file);
         //debug("Nread = %zu", nread);
         //debug("Write_success = %zu", write_success);
     }
@@ -179,7 +179,8 @@ handle_cgi_request(struct request *r)
     /* Export CGI environment variables from request:
     * http://en.wikipedia.org/wiki/Common_Gateway_Interface */
     setenv("DOCUMENT_ROOT", RootPath, 1);
-    setenv("QUERY_STRING", r->query, 1);
+    if (r->query)
+        setenv("QUERY_STRING", r->query, 1);
     setenv("REMOTE_ADDR", r->host, 1);
     setenv("REMOTE_PORT", r->port, 1);
     setenv("REQUEST_METHOD", r->method, 1);
