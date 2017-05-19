@@ -148,6 +148,7 @@ handle_file_request(struct request *r)
 
         // write to client file from buffer
         fwrite(buffer, 1, nread, r->file);
+        
         //debug("Nread = %zu", nread);
         //debug("Write_success = %zu", write_success);
     }
